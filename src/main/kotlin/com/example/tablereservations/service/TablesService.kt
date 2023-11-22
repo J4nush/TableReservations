@@ -38,10 +38,16 @@ class TablesService(val db: JdbcTemplate) {
         db.update("update tables set status_id = ? where id = ?", statusId, tableId)
     }
 
-    fun addTable(table_seats: Int, table_status: Int){
-        db.update("insert into tables values (?, ?)", arrayOf(table_seats, table_status))
+    fun closeTable(table_id: Int){
+        db.update("update tables set status_id = 1 where id = ?", table_id)
     }
 
+    fun openTable(table_id: Int){
+        db.update("update tables set status_id = 2 where id = ?", table_id)
+    }
+    fun addTable(table_seats: Int, table_status: Int) {
+        db.update("insert into tables values (?, ?)", arrayOf(table_seats, table_status))
+    }
 
     fun initTables() {
         db.update("insert into tables values (1, 4), (2, 5)")

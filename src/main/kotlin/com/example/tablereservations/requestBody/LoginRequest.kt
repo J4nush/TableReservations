@@ -1,3 +1,3 @@
-package com.example.tablereservations.data
+package com.example.tablereservations.requestBody
 
 data class LoginRequest(val login: String, val password: String)

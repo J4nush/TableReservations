@@ -51,13 +51,13 @@ class AuthService {
         }
     }
 
-    fun readRole(token: String): Any?{
-        try {
+    fun readRole(token: String): Int{
+        return try {
             val claims = parseToken(token)
             val role_id = claims["role_id"]
-            return role_id
+            role_id as Int
         }catch (e: Exception){
-            return false
+            0 as Int
         }
     }
     fun readUser(token: String): Any?{

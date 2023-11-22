@@ -26,7 +26,7 @@ MERGE INTO roles (id, `key`, `name`) KEY(id) VALUES
     (3, 'WORKER', 'Pracownik');
 
 CREATE TABLE IF NOT EXISTS users (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     login VARCHAR(30)  NOT NULL,
     password VARCHAR(100) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
@@ -41,7 +41,7 @@ MERGE INTO users (`id`, login, password, first_name, last_name, role_id, status_
     (1, 'admin', '16d7a4fca7442dda3ad93c9a726597e4', 'admin', 'admin', 1, 7);
 
 CREATE TABLE IF NOT EXISTS tables (
-    id INT  PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     seats INT  NOT NULL,
     status_id INT,
     FOREIGN KEY (status_id) REFERENCES statuses(id)
@@ -54,14 +54,15 @@ MERGE INTO tables (`id`, seats, status_id) KEY(id) VALUES
     (4, 4, 1);
 
 CREATE TABLE IF NOT EXISTS reservations (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     table_id INT,
     `date` DATE NOT NULL,
+    `hour` VARCHAR(5) NOT NULL,
     email VARCHAR(100) NOT NULL,
     status_id INT,
     FOREIGN KEY (status_id) REFERENCES statuses(id),
     FOREIGN KEY (table_id) REFERENCES tables(id)
     );
 
-MERGE INTO reservations (id, table_id, `date`, email, status_id) KEY(id) VALUES
-    (1,1, curdate(), 'eloelo@gmail.com', 3);
+MERGE INTO reservations (id, table_id, `date`, `hour`,  email, status_id) KEY(id) VALUES
+    (1, 1, curdate(), '15:00', 'eloelo@gmail.com', 3);

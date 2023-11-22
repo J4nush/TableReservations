@@ -22,5 +22,4 @@ class StatusesService(val db: JdbcTemplate) {
         response.getString("name")
         )
     }
-
 }
