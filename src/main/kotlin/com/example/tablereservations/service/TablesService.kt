@@ -19,7 +19,7 @@ class TablesService(val db: JdbcTemplate) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         return  db.query(
             """SELECT * FROM tables t WHERE t.id NOT IN 
-                (select r.id from reservations r WHERE YEAR(r.date) = ? AND MONTH(r.date) = ? AND DAYOFMONTH(r.date) = ? 
+                (select r.table_id from reservations r WHERE YEAR(r.date) = ? AND MONTH(r.date) = ? AND DAYOFMONTH(r.date) = ? 
                 AND r.status_id IN (SELECT s.id from statuses s where s.`key` like 'RES_NEW' OR s.`key` like 'RES_ACC'))""".trimMargin(),
             arrayOf(year, month, day)
         ) { response, _ ->
