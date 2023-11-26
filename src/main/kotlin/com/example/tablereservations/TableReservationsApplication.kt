@@ -48,22 +48,6 @@ class MessageController(
     @GetMapping("/")
     fun index(): List<Status> = statusService.findStatuses()
 
-    @GetMapping("/init")
-    fun initThisShit() = tablesService.initTables()
-
-    @GetMapping("/test")
-    fun genMD5(@RequestHeader("Authorization") authorizationHeader: String?): ResponseEntity<String> {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Unauthorized")
-        }
-        val token = authorizationHeader.substring(7) // Usuń "Bearer " z nagłówka
-        if (authService.validateToken(token)) {
-            // Token jest ważny
-            return ResponseEntity.ok(authService.readRole(token).toString())
-        }
-
-        return ResponseEntity.status(401).body("Invaild toknen")
-    }
 
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<String> {
@@ -81,19 +65,6 @@ class MessageController(
     @GetMapping("/tables")
     fun getTables(): ResponseEntity<Any> {
         return ResponseEntity.ok(tablesService.findTables())
-    }
-
-    @GetMapping("/test_av")
-    fun testFunction(@RequestParam date: String?, @RequestParam table: Int): ResponseEntity<Boolean> {
-        val dateAsObject: Date
-        dateAsObject = if (date == null) {
-            Date()
-        } else {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            dateFormat.parse(date)
-        }
-
-        return ResponseEntity.ok(reservationsService.isResevationExistForThisDay(table, dateAsObject))
     }
 
     @GetMapping("/all_reservations")
