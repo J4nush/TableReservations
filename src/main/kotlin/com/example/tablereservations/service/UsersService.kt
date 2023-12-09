@@ -1,6 +1,7 @@
 package com.example.tablereservations.service
 import com.example.tablereservations.data.*
 import com.example.tablereservations.requestBody.CreateUserRequest
+import com.example.tablereservations.requestBody.editUserRequest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 
@@ -18,6 +19,10 @@ class UsersService(val db: JdbcTemplate) {
         db.update("insert into users (login, password, first_name, last_name, role_id, status_id) values (?, ?, ?, ?, ?, ?)",
             user.login, user.password, user.first_name, user.last_name, user.role_id, user.status_id
             )
+    }
+
+    fun editUser(user: editUserRequest){
+        db.update("UPDATE users SET login = ?, first_name = ?, last_name = ?, role_id = ?, status_id = ? WHERE id = ?", user.login, user.first_name, user.last_name, user.role_id, user.status_id, user.user_id)
     }
 
 
@@ -67,6 +72,7 @@ class UsersService(val db: JdbcTemplate) {
     fun changeUserStatus(user_id: Int, new_role: Int){
         db.update("UPDATE users SET role_id = ? WHERE id = ?", arrayOf(new_role, user_id))
     }
+
 
 
 }

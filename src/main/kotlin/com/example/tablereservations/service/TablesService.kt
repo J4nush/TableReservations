@@ -1,6 +1,8 @@
 package com.example.tablereservations.service
 
 import com.example.tablereservations.data.*
+import com.example.tablereservations.requestBody.newTableRequest
+import com.example.tablereservations.requestBody.updateTableRequest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import java.util.*
@@ -27,11 +29,15 @@ class TablesService(val db: JdbcTemplate) {
         }
     }
 
-    fun save(table: Table) {
+    fun save(table: newTableRequest) {
         db.update(
-            "insert into tables (id, seats, status_id) values (?, ?, ?)",
-            table.id, table.seats, table.status
+            "insert into tables (seats, status_id) values (?, ?)",
+            table.seats, table.status
         )
+    }
+
+    fun udpdateTable(table: updateTableRequest){
+        db.update("update tables set seats = ?, status_id = ? where id = ?", table.seats, table.status, table.id)
     }
 
     fun updateTableStatus(tableId: Int, statusId: Int) {
@@ -39,16 +45,21 @@ class TablesService(val db: JdbcTemplate) {
     }
 
     fun closeTable(table_id: Int){
-        db.update("update tables set status_id = 1 where id = ?", table_id)
+        db.update("update tables set status_id = 2 where id = ?", table_id)
     }
 
     fun openTable(table_id: Int){
-        db.update("update tables set status_id = 2 where id = ?", table_id)
+        db.update("update tables set status_id = 1 where id = ?", table_id)
     }
     fun addTable(table_seats: Int, table_status: Int) {
         db.update("insert into tables values (?, ?)", arrayOf(table_seats, table_status))
     }
 
+    fun findTableById(table_id: Int): MutableList<Table> {
+        return db.query("Select * from tables where id = ?", arrayOf(table_id)){ response, _ ->
+            Table(response.getInt("id"), response.getInt("seats"), response.getInt("status_id"))
+        }
+    }
     fun initTables() {
         db.update("insert into tables values (1, 4), (2, 5)")
     }

@@ -78,12 +78,22 @@ class ReservationsService(val db: JdbcTemplate) {
         )
     }
 
-    fun makeReservationAccepted(reservation_id: Int){
-        db.update("update reservations set status_id = 4 where id = ? ", reservation_id)
+    fun makeReservationAccepted(reservation_id: Int): Boolean {
+        return try {
+            db.update("update reservations set status_id = 4 where id = ? ", reservation_id)
+            true
+        }catch (e: Exception){
+            false
+        }
     }
 
-    fun makeReservationCanceled(reservation_id: Int){
-        db.update("update reservations set status_id = 5 where id = ? ", reservation_id)
+    fun makeReservationCanceled(reservation_id: Int): Boolean {
+        return try{
+            db.update("update reservations set status_id = 5 where id = ? ", reservation_id)
+            true
+        }catch (e: Exception){
+            false
+        }
     }
 
     fun updateReservationStatus(reservationId: Int, statusId: Int) {

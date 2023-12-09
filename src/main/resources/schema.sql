@@ -37,21 +37,21 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (role_id) REFERENCES roles(id)
     );
 
-MERGE INTO users (`id`, login, password, first_name, last_name, role_id, status_id) KEY(id) VALUES
-    (1, 'admin', '16d7a4fca7442dda3ad93c9a726597e4', 'admin', 'admin', 1, 7);
+INSERT INTO users (login, password, first_name, last_name, role_id, status_id) VALUES
+    ('admin', '16d7a4fca7442dda3ad93c9a726597e4', 'admin', 'admin', 1, 7);
 
 CREATE TABLE IF NOT EXISTS tables (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    seats INT  NOT NULL,
+    seats INT NOT NULL,
     status_id INT,
     FOREIGN KEY (status_id) REFERENCES statuses(id)
     );
 
-MERGE INTO tables (`id`, seats, status_id) KEY(id) VALUES
-    (1, 4, 1),
-    (2, 2, 1),
-    (3, 6, 1),
-    (4, 4, 1);
+INSERT INTO tables (seats, status_id) VALUES
+    (4, 1),
+    (2, 1),
+    (6, 1),
+    (4, 1);
 
 CREATE TABLE IF NOT EXISTS reservations (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,5 +64,6 @@ CREATE TABLE IF NOT EXISTS reservations (
     FOREIGN KEY (table_id) REFERENCES tables(id)
     );
 
-MERGE INTO reservations (id, table_id, `date`, `hour`,  email, status_id) KEY(id) VALUES
-    (1, 1, curdate(), '15:00', 'eloelo@gmail.com', 3);
+INSERT INTO reservations (table_id, `date`, `hour`,  email, status_id) VALUES
+    (1, curdate(), '15:00', 'eloelo@gmail.com', 3);
+
